@@ -1,5 +1,5 @@
-import type { AxiosError } from "axios";
-import type { CacheAxiosResponse, InternalCacheRequestConfig } from "axios-cache-interceptor";
+import type { AxiosError, AxiosResponse } from "axios";
+import type { InternalCacheRequestConfig } from "axios-cache-interceptor";
 
 export const handleRequest = (
   config: InternalCacheRequestConfig,
@@ -21,10 +21,10 @@ export const handleRequestError = (
   return Promise.reject(error);
 };
 
-export const handleResponse = (
-  response: CacheAxiosResponse,
+export const handleResponse = <T extends AxiosResponse & { cached?: boolean }>(
+  response: T,
   logsEnabled?: boolean,
-): CacheAxiosResponse => {
+): T => {
   if (logsEnabled) {
     console.log(
       `[ Response ] STATUS ${response.status} | ${response.cached ? "CACHED" : "NOT CACHED"}`,
